@@ -1,95 +1,204 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>pH Değerine Göre Asidik, Bazik veya Nötr Olarak Tanımlama</title>
-	<meta charset="utf-8">
-	<style>
-		.container {
-			margin: auto;
-			max-width: 600px;
-			padding: 20px;
-			border: 1px solid #ddd;
-			border-radius: 5px;
-		}
-		.form-input {
-			display: block;
-			margin-bottom: 10px;
-			font-size: 16px;
-			padding: 10px;
-			border-radius: 5px;
-			border: 1px solid #ddd;
-			width: 100%;
-			box-sizing: border-box;
-		}
-		.form-button {
-			display: block;
-			margin-top: 10px;
-			font-size: 16px;
-			padding: 10px;
-			border-radius: 5px;
-			background-color: #007bff;
-			color: #fff;
-			cursor: pointer;
-			width: 100%;
-			box-sizing: border-box;
-			border: none;
-		}
-		.result {
-			margin-top: 20px;
-			padding: 10px;
-			border-radius: 5px;
-			font-size: 18px;
-		}
-		.result.acidic {
-			background-color: #ff8080;
-			color: #fff;
-		}
-		.result.basic {
-			background-color: #80b3ff;
-			color: #fff;
-		}
-		.result.neutral {
-			background-color: #f2f2f2;
-			color: #000;
-		}
-	</style>
-</head>
-<body>
-	<div class="container">
-		<h1>pH Değerine Göre Asidik, Bazik veya Nötr Olarak Tanımlama</h1>
-		<form id="pHForm">
-			<label for="pHValue">pH Değeri:</label>
-			<input type="number" step="0.1" min="0" max="14" name="pHValue" id="pHValue" class="form-input" required>
-			<button type="submit" class="form-button">Gönder</button>
-		</form>
-		<div id="result" class="result"></div>
-	</div>
-	<script>
-	
-const pHForm = document.getElementById('pHForm');
-const pHValue = document.getElementById('pHValue');
-const result = document.getElementById('result');
+  <head>
+    <title>pH Değerine Göre Asidik, Bazik veya Nötr Olarak Tanımlama</title>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      .container {
+        margin: auto;
+        max-width: 600px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
 
-pHForm.addEventListener('submit', function(event) {
-  event.preventDefault(); // Sayfanın yenilenmesini engelle
-  
-  const pH = parseFloat(pHValue.value); // pH değerini al ve float'a çevir
-  
-  if (pH < 7) {
-    result.textContent = `pH değeri ${pH} olan çözelti asidiktir.`;
-    result.classList.remove('basic', 'neutral');
-    result.classList.add('acidic');
-  } else if (pH > 7) {
-    result.textContent = `pH değeri ${pH} olan çözelti baziktir.`;
-    result.classList.remove('acidic', 'neutral');
-    result.classList.add('basic');
-  } else {
-    result.textContent = `pH değeri ${pH} olan çözelti nötrdür.`;
-    result.classList.remove('acidic', 'basic');
-    result.classList.add('neutral');
-  }
-});
+      .form-input {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        width: 100%;
+        box-sizing: border-box;
+      }
 
-	</script>
-</body>
+      .form-button {
+        display: block;
+        margin-top: 10px;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+      }
+
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 18px;
+      }
+
+      .result.acidic {
+        background-color: #ff8080;
+        color: #fff;
+      }
+
+      .result.basic {
+        background-color: #80b3ff;
+        color: #fff;
+      }
+
+      .result.neutral {
+        background-color: #f2f2f2;
+        color: #000;
+      }
+
+      #materials {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      #materials ul {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #materials li {
+        list-style: none;
+        margin: 10px;
+        float: left;
+      }
+
+      #materials button {
+        width: 150px;
+        height: 80px;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        border: none;
+        margin: 10px;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+
+      #materials button:hover {
+        opacity: 0.8;
+      }
+
+      .acidic-material {
+        background-color: #ff6666;
+      }
+
+      .neutral-material {
+        background-color: #6699ff;
+      }
+
+      .basic-material {
+        background-color: #66cc66;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      p {
+        text-align: center;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>pH Değeri Ölçümü </br>Asidik, Bazik veya Nötr Olarak Tanımlama </h1>
+      <form id="pHForm">
+        <label for="pHValue">pH Değeri:</label>
+        <input type="number" step="0.1" min="0" max="14" name="pHValue" id="pHValue" class="form-input" placeholder="pH Değeri Girin" required>
+        <button type="submit" class="form-button">Gönder</button>
+      </form>
+      <div id="result" class="result"></div>
+    </div>
+    <h1>Örnek Materyaller</h1>
+	<p>Butonlara tıklayarak materyallerin pH değerini öğrenebilirsiniz.<p>
+    <div id="materials">
+      <button class="acidic-material" data-ph="2.0">Limonsuyu</button>
+      <button class="acidic-material" data-ph="3.0">Domates suyu</button>
+      <button class="acidic-material" data-ph="4.0">Kahve</button>
+      <button class="neutral-material" data-ph="7.0">Su</button>
+      <button class="basic-material" data-ph="9.0">Sodyum Bikarbonat</button>
+      <button class="basic-material" data-ph="10.0">Sıvı Sabun</button>
+      <button class="acidic-material" data-ph="2.5">Greyfurt suyu</button>
+      <button class="acidic-material" data-ph="3.5">Elma suyu</button>
+      <button class="neutral-material" data-ph="7.5">Süt</button>
+      <button class="basic-material" data-ph="9.5">Karbonatlı su</button>
+      <button class="basic-material" data-ph="10.5">Beyaz sirke</button>
+      <button class="acidic-material" data-ph="2.8">Turunçgil suyu</button>
+      <button class="acidic-material" data-ph="3.8">Portakal suyu</button>
+      <button class="acidic-material" data-ph="4.8">Çay</button>
+      <button class="basic-material" data-ph="9.8">Beyaz çamaşır deterjanı</button>
+      <button class="basic-material" data-ph="10.8">Sodyum Hidroksit</button>
+      <button class="acidic-material" data-ph="2.2">Limonata</button>
+      <button class="acidic-material" data-ph="3.2">Vişne suyu</button>
+      <button class="acidic-material" data-ph="4.2">Kola</button>
+      <button class="neutral-material" data-ph="7.2">Soda</button>
+      <button class="basic-material" data-ph="9.2">Bulaşık deterjanı</button>
+      <button class="basic-material" data-ph="10.2">Amonyak</button>
+      <button class="acidic-material" data-ph="2.3">Mandalina suyu</button>
+      <button class="acidic-material" data-ph="3.3">Karpuz suyu</button>
+      <button class="acidic-material" data-ph="4.3">Portakal gazozu</button>
+      <button class="neutral-material" data-ph="7.3">Çeşme suyu</button>
+    </div>
+    <script>
+      const pHForm = document.getElementById('pHForm');
+      const pHValue = document.getElementById('pHValue');
+      const result = document.getElementById('result');
+      pHForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Sayfanın yenilenmesini engelle
+        const pH = parseFloat(pHValue.value); // pH değerini al ve float'a çevir
+        if (pH < 7) {
+          result.textContent = `pH değeri ${pH} olan çözelti asidiktir.`;
+          result.classList.remove('basic', 'neutral');
+          result.classList.add('acidic');
+        } else if (pH > 7) {
+          result.textContent = `pH değeri ${pH} olan çözelti baziktir.`;
+          result.classList.remove('acidic', 'neutral');
+          result.classList.add('basic');
+        } else {
+          result.textContent = `pH değeri ${pH} olan çözelti nötrdür.`;
+          result.classList.remove('acidic', 'basic');
+          result.classList.add('neutral');
+        }
+      });
+      const acidicMaterials = document.querySelectorAll('.acidic-material');
+      const basicMaterials = document.querySelectorAll('.basic-material');
+      const neutralMaterials = document.querySelectorAll('.neutral-material');
+
+      function addMaterialClickListeners(materials) {
+        materials.forEach(function(material) {
+          material.addEventListener('click', function(event) {
+            pHValue.value = event.target.dataset.ph;
+            pHForm.dispatchEvent(new Event('submit'));
+            console.log(1);
+            $('html, body').animate({
+              scrollTop: 0
+            }, '300');
+          });
+        });
+      }
+      addMaterialClickListeners(acidicMaterials);
+      addMaterialClickListeners(basicMaterials);
+      addMaterialClickListeners(neutralMaterials);
+    </script>
+  </body>
 </html>
