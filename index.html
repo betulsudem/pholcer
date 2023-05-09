@@ -1,34 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PH Ölçer Projesi</title>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="script.js"></script>
+	<title>pH Değerine Göre Asidik, Bazik veya Nötr Olarak Tanımlama</title>
+	<meta charset="utf-8">
+	<style>
+		.container {
+			margin: auto;
+			max-width: 600px;
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+		}
+		.form-input {
+			display: block;
+			margin-bottom: 10px;
+			font-size: 16px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ddd;
+			width: 100%;
+			box-sizing: border-box;
+		}
+		.form-button {
+			display: block;
+			margin-top: 10px;
+			font-size: 16px;
+			padding: 10px;
+			border-radius: 5px;
+			background-color: #007bff;
+			color: #fff;
+			cursor: pointer;
+			width: 100%;
+			box-sizing: border-box;
+			border: none;
+		}
+		.result {
+			margin-top: 20px;
+			padding: 10px;
+			border-radius: 5px;
+			font-size: 18px;
+		}
+		.result.acidic {
+			background-color: #ff8080;
+			color: #fff;
+		}
+		.result.basic {
+			background-color: #80b3ff;
+			color: #fff;
+		}
+		.result.neutral {
+			background-color: #f2f2f2;
+			color: #000;
+		}
+	</style>
 </head>
 <body>
-	<h1>Değer Girin:</h1>
-	<form id="form">
-		<label for="number">Değer:</label>
-		<input type="number" id="number" name="number" min="0" max="14" step="0.10">
-		<br><br>
-		<input type="submit" value="Gönder">
-	</form>
-	<div id="result"></div>
-</body>
-  <script>
-    $(document).ready(function(){
-    $('#form').submit(function(e){
-        e.preventDefault();
-        var value = $('#number').val();
-        $.ajax({
-            type: "POST",
-            url: "process.php", // form verilerinin işleneceği PHP dosyasının yolu
-            data: {number: value}, // form verileri
-            success: function(data){
-                $('#result').html(data); // işlenmiş verileri görüntüleme
-            }
-        });
-    });
+	<div class="container">
+		<h1>pH Değerine Göre Asidik, Bazik veya Nötr Olarak Tanımlama</h1>
+		<form id="pHForm">
+			<label for="pHValue">pH Değeri:</label>
+			<input type="number" step="0.1" min="0" max="14" name="pHValue" id="pHValue" class="form-input" required>
+			<button type="submit" class="form-button">Gönder</button>
+		</form>
+		<div id="result" class="result"></div>
+	</div>
+	<script>
+	
+const pHForm = document.getElementById('pHForm');
+const pHValue = document.getElementById('pHValue');
+const result = document.getElementById('result');
+
+pHForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // Sayfanın yenilenmesini engelle
+  
+  const pH = parseFloat(pHValue.value); // pH değerini al ve float'a çevir
+  
+  if (pH < 7) {
+    result.textContent = `pH değeri ${pH} olan çözelti asidiktir.`;
+    result.classList.remove('basic', 'neutral');
+    result.classList.add('acidic');
+  } else if (pH > 7) {
+    result.textContent = `pH değeri ${pH} olan çözelti baziktir.`;
+    result.classList.remove('acidic', 'neutral');
+    result.classList.add('basic');
+  } else {
+    result.textContent = `pH değeri ${pH} olan çözelti nötrdür.`;
+    result.classList.remove('acidic', 'basic');
+    result.classList.add('neutral');
+  }
 });
-  </script>
+
+	</script>
+</body>
 </html>
